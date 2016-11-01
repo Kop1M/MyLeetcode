@@ -45,18 +45,3 @@ int maximalSquare(vector<vector<char>>& matrix)
 	}
 	return Max*Max;
 }
-
-int numSquares(int n)
-{
-	int dp[100];
-	dp[0] = 0;
-	int begin = (int)sqrt(n);
-	for (int i = 1; i <= n; i++){
-		int Min = i;
-		for (int j = (int)sqrt(i)*(int)sqrt(i); j >= 1; j = ((int)sqrt(j) - 1)*((int)sqrt(j) - 1)){
-			Min = min(dp[i - j], Min);
-		}
-		dp[i] = Min + 1;
-	}
-	return dp[n];
-}
