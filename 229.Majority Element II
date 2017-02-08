@@ -1,0 +1,59 @@
+vector<int> majorityElement(vector<int>& nums) 
+{
+	vector<int> res;
+	if (nums.size() < 2) return res;
+	int a = nums[0], b = nums[1], ca = 1, cb = 1;
+	for (int i = 2; i < nums.size(); i++){
+		/*
+		相等的话把a和b当不同的数来看待，保证a的ca正常即可。尽量加a，替换b，
+		因为如果相等的话保留一个数就可以了，替换b的意义就是让另一个数占了
+		这个坑，还保留住a。
+		*/
+		if (a == b){
+			if (nums[i] == a){
+				ca++;
+			}
+			else if (cb>0) cb--;
+			else{
+				cb = 0;
+				b = nums[i];
+			}
+		}
+		/*
+			a，b不想等的话那么谁相等加谁，都不想当的话，a为0的话就先替换a，否则替换b，都不为0就都减一。
+			都减一的原因是，试想，如果你只减a，那么a后边加上来的话，你这个顶替的数就很难去替换b了，而这个数可能
+			比b的个数多的，所以b本应该也减一。
+		*/
+		else{
+			if (nums[i] == a) ca++;
+			else if (nums[i] == b) cb++;
+			else if (ca == 0){
+				a = nums[i];
+				ca = 1;
+			}
+			else if (cb == 0){
+				b = nums[i];
+				cb = 1;
+			}
+			else{
+				ca--;
+				cb--;
+			}
+		}
+	}
+	/*
+		验证a和b是不是大于nums.size()/3，比如(｛4,2,1,1｝就得验证)
+	*/
+	ca = 0;
+	cb = 0;
+	for (int i : nums){
+		if (i == a) ca++;
+		if (i == b) cb++;
+	}
+	if (ca > nums.size() / 3)
+		res.push_back(a);
+	if (a == b) return res;
+	if (cb > nums.size() / 3)
+		res.push_back(b);
+	return res;
+}
