@@ -1,0 +1,27 @@
+
+//回溯法一般都得在重新写个函数来调用，用到递归。
+void backtrace(vector<vector<int>> &res, vector<int> &v, int start, int k, int n){
+	if (k > 1 && n >= start){
+		for (int i = start;i<=9; i++){
+			if ((k - 1)*(i + 1) > n - i) return;
+			if ((k - 1) * 9 < n - i) continue;
+			v.push_back(i);
+			backtrace(res, v, i + 1, k - 1, n - i);
+			v.pop_back();
+		}
+	}
+	else if (k <= 1){
+		v.push_back(n);
+		res.push_back(v);
+		v.pop_back();
+	}
+	else return;
+}
+
+vector<vector<int>> combinationSum3(int k, int n)
+{
+	vector<vector<int>> res;
+	vector<int> v;
+	backtrace(res, v, 1, k, n);
+	return res;
+}
